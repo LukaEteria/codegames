@@ -1,0 +1,19 @@
+.intro-overlay {
+  position: fixed;
+  z-index: 1000;
+  background: black;
+  color: white;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro-text {
+  font-size: 4rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}

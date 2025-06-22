@@ -1,0 +1,368 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  height: 100%;
+  width: 100%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgb(231, 102, 60) 0%,
+    rgb(72, 12, 2) 100%
+  );
+}
+.game-board {
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle at center, #b64228 0%, #3b0f0f 100%);
+  background-color: #3b0f0f;
+}
+/* თამაშის განლაგება */
+.game-layout {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  gap: 20px;
+
+}
+
+/* გუნდის პანელები */
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+}
+
+.team-panel {
+  width: 350px;
+  height: 350px;
+  padding: 16px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.team-panel h2 {
+  text-align: center;
+  margin: 0 0 10px;
+}
+
+.team-panel.red {
+  background: linear-gradient(to bottom, #aa2d2d, #661111);
+  order: 2;
+  background: linear-gradient(to bottom right, #c0392b, #8e0e00);
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.team-panel.blue {
+  background: linear-gradient(to bottom, #216583, #153047);
+  order: 0;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.center {
+  flex: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  order: 1;
+}
+
+/* დაფა */
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* თითოეული ბარათი */
+.cell {
+  background: #f9ebd2;
+  border: 2px solid #e0c097;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  font-family: "Noto Sans Georgian", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  padding: 36px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+/* სიტყვა ბარათზე */
+.word {
+  z-index: 1;
+  color: #1c1c1c;
+}
+
+/* გამოჩენილი ბარათები */
+.cell.revealed {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* როლების ფერები */
+.role-red {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.role-blue {
+  background-color: #3498db;
+  color: white;
+}
+
+.role-neutral {
+  background-color: #bdc3c7;
+  color: black;
+}
+
+.role-assassin {
+  background-color: black;
+  color: white;
+}
+
+/* სპაიმასტერის მარკერი */
+.role-mark {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #333;
+  font-weight: normal;
+}
+
+/* არჩეული ბარათი */
+.selected {
+  outline: 3px solid gold;
+  box-shadow: 0 0 10px gold;
+}
+
+/* კლუს შეყვანა */
+.clue-box input {
+  padding:8px;
+  width: 200px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-right: 5px;
+  margin-top: 20px;
+}
+.clue-box button {
+  padding: 8px 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.clue-box button:hover {
+  background-color: #43a047;
+}
+
+button {
+  background: #f1c40f;
+  color: #222;
+  border: none;
+  padding: 8px 14px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  background: #d4ac0d;
+  transform: translateY(-1px);
+}
+
+/* რიგის ინფო */
+.turn-box {
+  margin-top: 15px;
+  font-size: 16px;
+  text-align: center;
+}
+.turn-box button {
+  margin-top: 10px;
+  padding: 6px 10px;
+  background: #444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.turn-box button:hover {
+  background: #333;
+}
+
+/* მოგების მარკერი */
+.winner {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #2ecc71;
+}
+
+
+/* დროპდაუნები */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+
+.dropdown-button {
+  padding: 10px 16px;
+  background-color: #f1c40f;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-button:hover {
+  background-color: #d4ac0d;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 14px;
+  border-radius: 8px;
+  min-width: 250px;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.link-title {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #333;
+  display: block;
+}
+
+.room-link-input {
+  width: 100%;
+  height: 40px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 20px;
+  background-color: #f9f9f9;
+  color: #444;
+  margin-bottom: 10px;
+  pointer-events: none;
+  box-shadow: inset 2px 2px 0px 0px silver;
+}
+.copy-button {
+  padding: 8px 12px;
+  background-color: #f1c40f;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius:20px;
+  cursor: pointer;
+  width: 75%;
+  height: 40px;
+}
+
+.copy-button:hover {
+  background-color: #2980b9;
+}
+
+/* გამე ინფო */
+.room-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.game-infos {
+ 
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  min-width: 200px;
+}
+
+
+
+/* რულეს */
+.rules-button {
+  margin-left: 10px;
+  padding: 8px 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.rules-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.rules-content {
+  background-color: rgb(41, 28, 28);
+  padding: 24px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  text-align: left;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close-button-bottom {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #eee;
+  border: none;
+  cursor: pointer;
+}
