@@ -35,6 +35,11 @@ function PlayerDropdown({ room }) {
           <button className="copy-button" onClick={copyToClipboard}>
             ლინკის კოპირება
           </button>
+
+          {/* ✅ დამატება: ოთახის ID ტექსტად */}
+          <div className="room-id-display">
+            <strong>ოთახის ID:</strong> {room?.id}
+          </div>
         </div>
       )}
     </div>

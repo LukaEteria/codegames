@@ -182,6 +182,22 @@ body {
 .clue-box button:hover {
   background-color: #43a047;
 }
+.copy-box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.room-link-input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-right: 6px;
+  background-color: #f9f9f9;
+}
+
 
 button {
   background: #f1c40f;

@@ -1,43 +1,63 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 
-function PlayerRoleControl({ room, socket }) {
-  const savedNickname = localStorage.getItem("nickname");
-  const [nickname, setNickname] = useState(savedNickname || "");
-  const [openDropdown, setOpenDropdown] = useState(false);
-  const dropdownRef = useRef();
+function PlayerDropdown({ room }) {
+  const [open, setOpen] = useState(false);
+  const toggleDropdown = () => setOpen(!open);
 
-  const leaveRoom = () => {
-    socket.disconnect();
-    window.location.reload(); // თავიდან ტვირთავს თამაშს
+  const playerCount = room?.players?.length || 0;
+  const roomLink = `${window.location.origin}?room=${room?.id || ""}`;
+  const roomId = room?.id || "";
+
+  const copyToClipboard = async (text, label = "დაკოპირდა!") => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert(label);
+    } catch (err) {
+      alert("დაკოპირების შეცდომა");
+    }
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setOpenDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   return (
-    <div className="player-role-control" ref={dropdownRef}>
-      <button className="dropdown-button" onClick={() => setOpenDropdown(!openDropdown)}>
-        👤 {nickname || "მოთამაშე"} ▾
+    <div className="dropdown-container">
+      <button className="dropdown-button" onClick={toggleDropdown}>
+        მოთამაშეები ({playerCount})
       </button>
 
-      {openDropdown && (
-        <div className="dropdown-content">
-          <button onClick={leaveRoom} className="leave-room-button">
-            🚪 ოთახის დატოვება
-          </button>
+      {open && (
+        <div className="dropdown-menu">
+          {/* Room link */}
+          <label htmlFor="room-link" className="link-title">ოთახის ლინკი:</label>
+          <div className="copy-box">
+            <input
+              id="room-link"
+              className="room-link-input"
+              type="text"
+              value={roomLink}
+              readOnly
+            />
+            <button className="copy-button" onClick={() => copyToClipboard(roomLink, "ლინკი დაკოპირდა!")}>
+              📋
+            </button>
+          </div>
+
+          {/* Room ID */}
+          <label htmlFor="room-id" className="link-title">ოთახის ID:</label>
+          <div className="copy-box">
+            <input
+              id="room-id"
+              className="room-link-input"
+              type="text"
+              value={roomId}
+              readOnly
+            />
+            <button className="copy-button" onClick={() => copyToClipboard(roomId, "ID დაკოპირდა!")}>
+              📋
+            </button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-export default PlayerRoleControl;
+export default PlayerDropdown;
